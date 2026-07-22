@@ -13,6 +13,11 @@ array[1..m] of float: ce;           % Array de costo extra al mover a una opini�
 float: ct;                          % Costo máximo permitido
 int: maxM;                          % Movimientos máximos permitidos
 
+% Diferencias absolutas de opiniones precalculadas (constantes)
+array[1..m, 1..m] of float: v_diff = array2d(1..m, 1..m, [
+    abs(v[i] - v[j]) | i, j in 1..m
+]);
+
 % --- VARIABLES DE DECISIÓN ---
 
 % x[i, j]: Número de personas que pasan de la opinión i a la opinión j
@@ -71,16 +76,31 @@ constraint costo_total = sum(i in 1..m, j in 1..m where i != j) (
 constraint costo_total <= ct;
 
 
-% --- CÁLCULO DE LA MEDIANA Y POLARIZACIÓN ---
+% --- CÁLCULO DE LA MEDIANA Y POLARIZACIÓN (Linealizado para MIP) ---
 
-% La mediana es la postura donde la población acumulada desde la izquierda y desde la derecha 
-% cubre al menos la mitad de la población total ((n + 1) div 2)
-constraint sum(i in 1..idx_mediana)(p_fin[i]) >= ((n + 1) div 2);
-constraint sum(i in idx_mediana..m)(p_fin[i]) >= ((n + 1) div 2);
+% Indicador: is_median[k] es true si k cumple la condición de mediana
+array[1..m] of var bool: is_median;
+constraint forall(k in 1..m) (
+    is_median[k] <-> (
+        sum(i in 1..k)(p_fin[i]) >= ((n + 1) div 2) /\
+        sum(i in k..m)(p_fin[i]) >= ((n + 1) div 2)
+    )
+);
 
-% Cálculo de la polarización final según la fórmula del problema
-constraint polarizacion = sum(i in 1..m) (
-    int2float(p_fin[i]) * abs(v[i] - v[idx_mediana])
+% Al menos una mediana válida debe existir
+constraint sum(k in 1..m)(bool2int(is_median[k])) >= 1;
+
+% idx_mediana debe ser una de las medianas válidas
+constraint is_median[idx_mediana] = true;
+
+% Cota Big-M para linealizar la polarización
+float: M_pol = int2float(n) * max([abs(v[i] - v[j]) | i, j in 1..m]);
+
+% Polarización >= valor real cuando is_median[k] es true (Big-M)
+constraint forall(k in 1..m) (
+    polarizacion >= sum(i in 1..m)(
+        int2float(p_fin[i]) * v_diff[i, k]
+    ) - (1.0 - int2float(bool2int(is_median[k]))) * M_pol
 );
 
 
