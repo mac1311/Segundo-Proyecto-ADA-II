@@ -1,0 +1,17 @@
+% Instancia 2: Opiniones vacías intermedias
+% 10 personas, 4 opiniones
+% Dos opiniones intermedias vacías: [4, 0, 0, 6]
+% Propósito: probar el costo extra (ce) al mover a opiniones vacías
+%            y ver si el modelo prefiere consolidar en opiniones existentes
+
+n = 10;
+m = 4;
+p = [4, 0, 0, 6];
+v = [0.0, 0.33, 0.67, 1.0];
+ce = [8.0, 12.0, 12.0, 8.0];
+c = [|0, 3, 6, 9|
+     2, 0, 3, 6|
+     5, 2, 0, 3|
+     8, 5, 2, 0|];
+ct = 25.0;
+maxM = 8;

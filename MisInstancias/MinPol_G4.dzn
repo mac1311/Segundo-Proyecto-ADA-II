@@ -1,0 +1,19 @@
+% Instancia 4: Presupuesto MUY ajustado
+% 30 personas, 6 opiniones
+% Distribución: [10, 5, 0, 5, 0, 10]
+% Propósito: probar el efecto de un presupuesto restrictivo (ct=15)
+%            El modelo debe priorizar los movimientos más "baratos"
+
+n = 30;
+m = 6;
+p = [10, 5, 0, 5, 0, 10];
+v = [0.0, 0.2, 0.4, 0.6, 0.8, 1.0];
+ce = [7.0, 8.0, 10.0, 10.0, 8.0, 7.0];
+c = [|0, 2, 4, 6, 8, 10|
+     1, 0, 2, 4, 6, 8|
+     3, 1, 0, 2, 4, 6|
+     5, 3, 1, 0, 2, 4|
+     7, 5, 3, 1, 0, 2|
+     9, 7, 5, 3, 1, 0|];
+ct = 15.0;
+maxM = 20;

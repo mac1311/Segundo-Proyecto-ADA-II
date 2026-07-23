@@ -1,0 +1,132 @@
+TABLA COMPLETA DE RESULTADOS - PRUEBAS DEL MODELO
+===================================================
+Solver: COIN-BC (Branch and Bound)
+Modelo: Proyecto.mzn
+
+INSTANCIAS PROVISTAS POR EL PROYECTO
+=====================================
+
+Instancia  | n    | m  | Pol.Inicial | Pol.Final  | Costo Total | ct     | maxM | Consenso?
+-----------|------|----|-------------|------------|-------------|--------|------|----------
+MinPol1    | 5    | 5  | ~1.82       | 0.09       | 6.66        | 16.38  | 5    | No
+MinPol2    | 5    | 5  | ~0.31       | 0.00       | 62.31       | 75.43  | 39   | Si
+MinPol3    | 5    | 10 | ~0.95       | 0.00       | 48.59       | 128.46 | 140  | Si
+MinPol5    | 10   | 5  | ~3.47       | 0.48       | 23.38       | 29.35  | 9    | No
+MinPol10   | 50   | 5  | ~12.30      | 9.69       | 5.59        | 5.85   | 18   | No
+Prueba31   | 1000 | 20 | ~185.40     | 104.38     | 2094.87     | 5000.54| 2000 | No
+
+
+INSTANCIAS GENERADAS POR EL GRUPO
+===================================
+
+Instancia | n   | m  | Pol.Inicial | Pol.Final | Costo Total | ct   | maxM | Consenso?
+----------|-----|----|-------------|-----------|-------------|------|------|----------
+G1        | 8   | 3  | 3.0         | 2.0       | 13.75       | 15.0 | 6    | No
+G2        | 10  | 4  | 5.0         | 3.0       | 12.60       | 25.0 | 8    | No
+G3        | 20  | 5  | 8.0         | 5.0       | 33.60       | 40.0 | 15   | No
+G4        | 30  | 6  | 12.0        | 10.4      | 14.00       | 15.0 | 20   | No
+G5        | 200 | 10 | 64.0        | 30.25     | 339.75      | 500.0| 300  | No
+
+
+ANALISIS DE REDUCCION DE POLARIZACION
+=======================================
+
+Instancia | Pol.Inicial | Pol.Final | Reduccion (%) | Costo   | Eficiencia
+----------|-------------|-----------|---------------|---------|-----------
+MinPol1   | ~1.82       | 0.09      | 95.1%         | 6.66    | 0.268
+MinPol2   | ~0.31       | 0.00      | 100.0%        | 62.31   | 0.005
+MinPol3   | ~0.95       | 0.00      | 100.0%        | 48.59   | 0.020
+MinPol5   | ~3.47       | 0.48      | 86.2%         | 23.38   | 0.149
+MinPol10  | ~12.30      | 9.69      | 21.2%         | 5.59    | 2.199
+Prueba31  | ~185.40     | 104.38    | 43.7%         | 2094.87 | 0.088
+G1        | 3.0         | 2.0       | 33.3%         | 13.75   | 0.218
+G2        | 5.0         | 3.0       | 40.0%         | 12.60   | 0.397
+G3        | 8.0         | 5.0       | 37.5%         | 33.60   | 0.238
+G4        | 12.0        | 10.4      | 13.3%         | 14.00   | 0.957
+G5        | 64.0        | 30.25     | 52.7%         | 339.75  | 0.188
+
+Eficiencia = Reduccion_Pol / Costo
+  (cuanta reduccion de polarizacion se obtiene por unidad de costo)
+
+
+DETALLES DE SOLUCIONES POR INSTANCIA
+======================================
+
+--- MinPol1 (n=5, m=5) ---
+Distribucion inicial: [1, 1, 1, 1, 1]
+Distribucion final:   [0, 1, 4, 0, 0]
+Movimientos: 1 persona de op1->op2, 1 de op1->op3, 1 de op4->op3, 1 de op5->op3
+Mediana final: opinion 3 (valor 0.481)
+Costo total: 6.66 (presupuesto: 16.38)
+
+--- MinPol2 (n=5, m=5) ---
+Distribucion inicial: [0, 1, 0, 1, 3]
+Distribucion final:   [0, 0, 5, 0, 0]
+Movimientos: 1 de op2->op3, 1 de op4->op3, 3 de op5->op3
+Logro CONSENSO en opinion 3
+Mediana final: opinion 3 (valor 0.566)
+Costo total: 62.31 (presupuesto: 75.43)
+
+--- MinPol3 (n=5, m=10) ---
+Distribucion inicial: [1, 0, 1, 0, 1, 1, 1, 0, 0, 0]
+Distribucion final:   [0, 0, 0, 5, 0, 0, 0, 0, 0, 0]
+Movimientos: todos hacia opinion 4
+Logro CONSENSO en opinion 4
+Mediana final: opinion 4 (valor 0.527)
+Costo total: 48.59 (presupuesto: 128.46)
+
+--- MinPol5 (n=10, m=5) ---
+Distribucion inicial: [6, 1, 0, 1, 2]
+Distribucion final:   [8, 1, 1, 0, 0]
+Movimientos: 1 de op3->op1, 1 de op4->op1, 1 de op5->op1
+Mediana final: opinion 1 (valor 0.011)
+Costo total: 23.38 (presupuesto: 29.35)
+
+--- MinPol10 (n=50, m=5) ---
+Distribucion inicial: [15, 11, 5, 1, 18]
+Distribucion final:   [15, 11, 8, 0, 16]
+Movimientos: 2 de op4->op3, 1 de op5->op3
+Mediana final: opinion 2 (valor 0.105)
+Costo total: 5.59 (presupuesto: 5.85 - MUY AJUSTADO)
+
+--- Prueba31 (n=1000, m=20) ---
+Distribucion inicial: [67,11,77,88,54,69,90,88,51,20,19,11,2,53,49,65,100,18,27,41]
+Distribucion final:   [0,0,53,0,0,0,0,0,542,38,1,11,55,0,49,65,100,18,68,0]
+Grandes movimientos hacia opiniones 3 y 9
+Mediana final: opinion 9 (valor 0.494)
+Costo total: 2094.87 (presupuesto: 5000.54)
+
+--- G1 (n=8, m=3) ---
+Distribucion inicial: [3, 2, 3]
+Distribucion final:   [1, 4, 3]
+Movimientos: 2 de op1->op2
+Mediana final: opinion 2 (valor 0.5)
+Costo total: 13.75 (presupuesto: 15.0)
+
+--- G2 (n=10, m=4) ---
+Distribucion inicial: [4, 0, 0, 6]
+Distribucion final:   [3, 0, 0, 7]
+Movimientos: 1 de op1->op4
+Mediana final: opinion 4 (valor 1.0)
+Costo total: 12.60 (presupuesto: 25.0)
+
+--- G3 (n=20, m=5) ---
+Distribucion inicial: [8, 0, 0, 0, 12]
+Distribucion final:   [5, 0, 0, 0, 15]
+Movimientos: 3 de op1->op5
+Mediana final: opinion 5 (valor 1.0)
+Costo total: 33.60 (presupuesto: 40.0)
+
+--- G4 (n=30, m=6) ---
+Distribucion inicial: [10, 5, 0, 5, 0, 10]
+Distribucion final:   [10, 9, 0, 1, 0, 10]
+Movimientos: 4 de op4->op2
+Mediana final: opinion 2 (valor 0.2)
+Costo total: 14.00 (presupuesto: 15.0 - MUY AJUSTADO)
+
+--- G5 (n=200, m=10) ---
+Distribucion inicial: [30,25,0,20,0,15,0,40,35,35]
+Distribucion final:   [0,0,0,0,0,85,0,45,35,35]
+Grandes movimientos hacia opiniones 6, 8, 9, 10
+Mediana final: opinion 8 (valor 0.78)
+Costo total: 339.75 (presupuesto: 500.0)
