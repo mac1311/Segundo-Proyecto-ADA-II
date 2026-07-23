@@ -1,0 +1,15 @@
+% Instancia 1: Caso pequeño y simétrico
+% 8 personas, 3 opiniones equidistantes
+% Distribución simétrica: [3, 2, 3]
+% Propósito: probar el caso más simple, verificar que el modelo funciona básico
+
+n = 8;
+m = 3;
+p = [3, 2, 3];
+v = [0.0, 0.5, 1.0];
+ce = [5.0, 10.0, 5.0];
+c = [|0, 5, 10|
+     5, 0, 5|
+     10, 5, 0|];
+ct = 15.0;
+maxM = 6;
