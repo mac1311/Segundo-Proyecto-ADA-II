@@ -18,6 +18,9 @@ array[1..m, 1..m] of float: v_diff = array2d(1..m, 1..m, [
     abs(v[i] - v[j]) | i, j in 1..m
 ]);
 
+% Cota Big-M para linealizar la polarización (usada también para acotar la variable)
+float: M_pol = int2float(n) * max([abs(v[i] - v[j]) | i, j in 1..m]);
+
 % --- VARIABLES DE DECISIÓN ---
 
 % x[i, j]: Número de personas que pasan de la opinión i a la opinión j
@@ -33,7 +36,7 @@ var 0.0..ct: costo_total;
 var 1..m: idx_mediana;
 
 % Valor de la polarización resultante (función objetivo)
-var float: polarizacion;
+var 0.0..M_pol: polarizacion;
 
 
 % --- RESTRICCIONES BÁSICAS ---
@@ -93,8 +96,7 @@ constraint sum(k in 1..m)(bool2int(is_median[k])) >= 1;
 % idx_mediana debe ser una de las medianas válidas
 constraint is_median[idx_mediana] = true;
 
-% Cota Big-M para linealizar la polarización
-float: M_pol = int2float(n) * max([abs(v[i] - v[j]) | i, j in 1..m]);
+% Cota Big-M para linealizar la polarización (definida arriba)
 
 % Polarización >= valor real cuando is_median[k] es true (Big-M)
 constraint forall(k in 1..m) (
