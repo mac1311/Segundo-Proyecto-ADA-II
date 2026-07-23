@@ -65,7 +65,7 @@ HFONT g_hFontUIBold  = NULL;
 HINSTANCE g_hInst    = NULL;
 
 // Rutas de datos y modelos
-char g_dirDatos[MAX_PATH]     = {};   // Ruta raíz de datos (Proyecto/Datos)
+char g_dirDatos[MAX_PATH]     = {};   // Ruta raiz de datos (Proyecto/Datos)
 char g_mznPath[MAX_PATH]      = {};   // Ruta de Proyecto.mzn
 char g_tempDznPath[MAX_PATH]  = {};   // Ruta de temp_converted.dzn
 char g_currentDir[MAX_PATH]   = {};   // Directorio actualmente explorado
@@ -84,7 +84,7 @@ void DialogoAbrirCarpeta(HWND hwnd);
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int nShow) {
     g_hInst = hInst;
 
-    // Inicializar COM para el diálogo de selección de carpeta
+    // Inicializar COM para el dialogo de seleccion de carpeta
     CoInitialize(NULL);
 
     INITCOMMONCONTROLSEX icc = {
@@ -117,7 +117,7 @@ int WINAPI WinMain(HINSTANCE hInst, HINSTANCE, LPSTR, int nShow) {
                              CLEARTYPE_QUALITY, FIXED_PITCH | FF_MODERN, "Consolas");
 
     HWND hwnd = CreateWindowEx(0, CLASS_NAME,
-        "Optimización de Riego y Polarización ADA II",
+        "Optimizacion de Riego y Polarizacion ADA II",
         WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, CW_USEDEFAULT, 1100, 740,
         NULL, NULL, hInst, NULL);
@@ -245,11 +245,11 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             HWND hLblAlg = GetDlgItem(hwnd, 5004);
             SetWindowPos(hLblAlg, NULL, rightX, algoY + 4, 60, 20, SWP_NOZORDER);
 
-            // Radio buttons
-            const int radios[] = { ID_RADIO_GECODE, ID_RADIO_HIGHS, ID_RADIO_COINBC };
+            // Radio buttons (solo HiGHS y COIN-BC)
+            const int radios[] = { ID_RADIO_HIGHS, ID_RADIO_COINBC };
             const int radioW   = 85;
             int rx = rightX + 65;
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 2; i++) {
                 HWND hR = GetDlgItem(hwnd, radios[i]);
                 SetWindowPos(hR, NULL, rx, algoY + 2, radioW, 24, SWP_NOZORDER);
                 rx += radioW + 4;
@@ -342,14 +342,13 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                     break;
                 case ID_HELP_ABOUT:
                     MessageBoxA(hwnd,
-                        "Optimizador de Riego y Polarización — MinPol ADA II\n\n"
+                        "Optimizador de Riego y Polarizacion - MinPol ADA II\n\n"
                         "Solvers disponibles:\n"
-                        "  • Gecode (CP)   — Solver CP robusto\n"
-                        "  • HiGHS (MIP)   — Solver MIP de alto rendimiento\n"
-                        "  • COIN-BC (MIP) — Solver MIP de COIN-OR\n\n"
+                        "  * HiGHS (MIP)   - Solver MIP de alto rendimiento\n"
+                        "  * COIN-BC (MIP) - Solver MIP de COIN-OR\n\n"
                         "Formatos de datos soportados:\n"
-                        "  • .dzn (Formato nativo de MiniZinc)\n"
-                        "  • .mpl (Formato de texto secuencial)",
+                        "  * .dzn (Formato nativo de MiniZinc)\n"
+                        "  * .mpl (Formato de texto secuencial)",
                         "Acerca de", MB_OK | MB_ICONINFORMATION);
                     break;
                 case ID_BTN_RESOLVER:
@@ -435,15 +434,14 @@ void CrearControles(HWND hwnd) {
     lvc.mask = LVCF_TEXT | LVCF_WIDTH | LVCF_FMT | LVCF_SUBITEM;
     lvc.fmt  = LVCFMT_RIGHT;
     lvc.pszText = (char*)"#";              lvc.cx = 45;  ListView_InsertColumn(g_hListTablones, 0, &lvc);
-    lvc.pszText = (char*)"p (Poblacion)";  lvc.cx = 120; ListView_InsertColumn(g_hListTablones, 1, &lvc);
-    lvc.pszText = (char*)"v (Valor)";      lvc.cx = 120; ListView_InsertColumn(g_hListTablones, 2, &lvc);
-    lvc.pszText = (char*)"ce (Costo Extra)";lvc.cx = 140; ListView_InsertColumn(g_hListTablones, 3, &lvc);
+    lvc.pszText = (char*)"p (Poblacion)";   lvc.cx = 120; ListView_InsertColumn(g_hListTablones, 1, &lvc);
+    lvc.pszText = (char*)"v (Valor)";        lvc.cx = 120; ListView_InsertColumn(g_hListTablones, 2, &lvc);
+    lvc.pszText = (char*)"ce (Costo Extra)"; lvc.cx = 140; ListView_InsertColumn(g_hListTablones, 3, &lvc);
 
-    // Radio buttons — HiGHS primero (Gecode no soporta float en este modelo)
+    // Radio buttons — HiGHS primero (solo MIP: Gecode no soporta float)
     struct { int id; const char* lbl; DWORD extra; } radios[] = {
         { ID_RADIO_HIGHS,  "Highs",   WS_GROUP | BS_AUTORADIOBUTTON },
         { ID_RADIO_COINBC, "coin-bc", BS_AUTORADIOBUTTON },
-        { ID_RADIO_GECODE, "gecode",  BS_AUTORADIOBUTTON },
     };
     for (auto& r : radios) {
         HWND h = CreateWindow("BUTTON", r.lbl,
@@ -451,7 +449,7 @@ void CrearControles(HWND hwnd) {
             0, 0, 10, 10, hwnd, (HMENU)(INT_PTR)r.id, g_hInst, NULL);
         SendMessage(h, WM_SETFONT, (WPARAM)g_hFontUI, TRUE);
     }
-    // Marcar HiGHS por defecto (Gecode no es compatible con float del modelo)
+    // Marcar HiGHS por defecto
     SendMessage(GetDlgItem(hwnd, ID_RADIO_HIGHS), BM_SETCHECK, BST_CHECKED, 0);
 
     // Botón Resolver
@@ -578,7 +576,7 @@ void SeleccionarArchivo(HWND hwnd, const string& ruta, const string& nombre) {
     string content((istreambuf_iterator<char>(archivo)), istreambuf_iterator<char>());
     archivo.close();
 
-    // Actualizar vista previa cruda reemplazando saltos de línea LF a CRLF si es necesario
+    // Actualizar vista previa cruda reemplazando saltos de linea LF a CRLF si es necesario
     string previewStr;
     previewStr.reserve(content.size() * 11 / 10);
     for (char c : content) {
@@ -613,7 +611,7 @@ void SeleccionarArchivo(HWND hwnd, const string& ruta, const string& nombre) {
         char status[512];
         snprintf(status, sizeof(status), "Error al parsear archivo: %s", nombre.c_str());
         SetWindowTextA(g_hStatus, status);
-        MessageBoxA(hwnd, "El archivo seleccionado no tiene un formato valido de MinPol (.dzn o .mpl).", 
+        MessageBoxA(hwnd, "El archivo seleccionado no tiene un formato valido de MinPol (.dzn o .mpl).",
                     "Error de Parseo", MB_OK | MB_ICONWARNING);
         return;
     }
@@ -637,7 +635,7 @@ void SeleccionarArchivo(HWND hwnd, const string& ruta, const string& nombre) {
     snprintf(buf, sizeof(buf), "Cargado: %s | %d opiniones", nombre.c_str(), g_parsedData.m);
     SetWindowTextA(g_hStatus, buf);
 
-    SetWindowTextA(g_hEdit, "Archivo cargado con éxito. Seleccione un solver y presione Resolver.");
+    SetWindowTextA(g_hEdit, "Archivo cargado con exito. Seleccione un solver y presione Resolver.");
 }
 
 // ─── Llenar ListView con los datos de las opiniones ───────
@@ -650,7 +648,7 @@ void LlenarListaOpiniones() {
         LV_ITEMA item = {};
         item.mask    = LVIF_TEXT;
         item.iItem   = i;
-        snprintf(buf, sizeof(buf), "%d", i + 1); // Opinión #i es la opinion con índice 1 a m
+        snprintf(buf, sizeof(buf), "%d", i + 1); // Opinion #i es la opinion con indice 1 a m
         item.pszText = buf;
         ListView_InsertItem(g_hListTablones, &item);
 
@@ -674,7 +672,7 @@ void LlenarListaOpiniones() {
     }
 }
 
-// ─── Ejecutar el solver MiniZinc con los parámetros ────────
+// ─── Ejecutar el solver MiniZinc con los parametros ────────
 void EjecutarSolver(HWND hwnd) {
     if (g_archivoActual.empty() || !g_parsedData.valid) {
         MessageBoxA(hwnd, "Por favor, seleccione un archivo de entrada valido primero.",
@@ -707,12 +705,10 @@ void EjecutarSolver(HWND hwnd) {
         dataPath = g_tempDznPath;
     }
 
-    // Determinar solver seleccionado (HiGHS es el default — Gecode no soporta float)
+    // Determinar solver seleccionado (HiGHS es el default)
     string solverName = "highs";
     if (SendMessage(GetDlgItem(hwnd, ID_RADIO_COINBC), BM_GETCHECK, 0, 0) == BST_CHECKED) {
         solverName = "coin-bc";
-    } else if (SendMessage(GetDlgItem(hwnd, ID_RADIO_GECODE), BM_GETCHECK, 0, 0) == BST_CHECKED) {
-        solverName = "gecode";
     }
 
     // Construir comando con --statistics para obtener el tiempo real del solver
@@ -750,7 +746,7 @@ void EjecutarSolver(HWND hwnd) {
         while (!line.empty() && (line.back() == '\n' || line.back() == '\r'))
             line.pop_back();
 
-        // Detectar y extraer solveTime de las estadísticas
+        // Detectar y extraer solveTime de las estadisticas
         if (line.rfind(STAT_PREFIX, 0) == 0) {
             // Formato: %%%mzn-stat: solveTime=0.123456
             size_t eqPos = line.find("solveTime=");
